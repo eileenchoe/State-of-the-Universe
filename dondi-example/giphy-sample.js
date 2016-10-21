@@ -18,7 +18,6 @@ window.GiphySearchController = (() => {
             var searchButton = $("#search-button");
             var searchTerm = $("#search-term");
             var imageResultContainer = $(".image-result-container");
-
             searchButton.click(() => {
                 // The getJSON function initiates a connection to the web service.
                 $.getJSON("http://api.giphy.com/v1/gifs/search", {
