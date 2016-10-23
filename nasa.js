@@ -9,6 +9,7 @@ window.NASASearchController = (() => {
             var apodTitle = $("#apodTitle");
             var sol = $("#sol");
             var earthDate = $("#earth-date");
+            var imageResultContainer = $(".image-result-container");
 
             var d = new Date();
             var month = d.getMonth() + 1;
@@ -42,6 +43,19 @@ window.NASASearchController = (() => {
                     api_key: "yIzbNo0iFApOqbQS5BBpCH04hC3v3Opuwii8iw7Q",
                     camera: "NAVCAM",
                 }).done((result) => {
+
+                	imageResultContainer.empty().append(
+                		result.photos.map((image) => {
+                			return $("<div></div>").addClass("col-xs-6 col-md-6").append(
+                				$("<a></a>").addClass("thumbnail").append(
+                				    $("<img/>").attr({
+                					    src: image.img_src,
+                					    alt: image.full_name,
+                				    })
+                				)
+                			);
+                		})
+                    );
                     curiosityImage.attr({
                         src: result.photos[0].img_src,
                         alt: result.photos[0].full_name,
