@@ -4,44 +4,96 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://use.typekit.net/hsh1jpi.js"></script>
+    <script>try{Typekit.load({ async: true });}catch(e){}</script>
     <title>State of the Universe</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="bootstrap-datepicker3.min.css">
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
   </head>
-
   <body>
-  	<div class="container">
-  		<div class="row text-center">
-  			<div class="col-xs-12">
-  				<h1>State of the Universe</h1>
-          <p>What's the universe up to this week?</p>
-  			</div>
+  	<div class="jumbotron">
+  		<div class="container">
+  			<h1>State of the Universe</h1>
+        <p>What's the universe up to this week?</p>
   		</div>
+  	</div>
+    <div class="container">
+
+      <!--Astronomy Picture of the Day-->
   		<div class="row">
-  			<div class="col-xs-12">
-  				<img id="apodImage" class="img-responsive" alt="Responsive image"></img>
-  				<p id="description"></p>
-  			</div>
+        <h2>Astronomy Picture of the Day</h2>
+        <h3 id="apodTitle"></h3>
+  			<img id="apodImage" class="img-responsive" alt="Responsive image"></img>
+        <!--http://www.bootstraptoggle.com/-->
+        <input id="toggle-event" type="checkbox" checked data-toggle="toggle" data-on="HD On" data-off="HD Off" data-onstyle="default" data-width="200">
+        <div id="console-event"></div>
+        <script>
+          $(function() {
+           $('#toggle-event').change(function() {
+            $('#console-event').html('Toggle: ' + $(this).prop('checked'))
+          })
+        })
+        </script>
+        <p id="description"></p>
       </div>
+
+      <div id="sandbox-container"></div>
+
+      <!--Curiosity on Mars-->
       <div class="row">
+        <h2>Curosity Rover on Mars</h2>
         <div class="col-xs-12">
           <img id="curiosity" class="img-responsive" alt"Responsive image"></img>
-          <p id="description"></p>
+          <h3>Earth Date</h3>
+          <p id="earth-date"></p>
+          <h3>Sol</h3>
+          <p id="sol"></p>
+        </div>
+        <div class="btn-group" role="group" aria-label="...">
+          <button type="button" class="btn btn-default">NavCam</button>
+          <button type="button" class="btn btn-default">MastCam</button>
+          <button type="button" class="btn btn-default">ChemCam</button>
         </div>
       </div>
+
       <!--DSCOVR's Earth Polychromatic Imaging Camera (EPIC) instrument-->
       <div class="row">
+        <h2>The Blue Marble</h2>
         <div class="col-xs-12">
           <img id="earth" class="img-responsive" alt"Responsive image"></img>
-          <!--HARDCODED-->
-          <img src="https://api.nasa.gov/EPIC/archive/natural/png/epic_1b_20161019002712_01.png?api_key=yIzbNo0iFApOqbQS5BBpCH04hC3v3Opuwii8iw7Q"></img>
-          <p id="description"></p>
         </div>
       </div>
+
   	</div>
-    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script src="nasa.js"></script>
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+    <script>
+      $('#sandbox-container').datepicker({
+        todayBtn: true,
+        todayHighlight: true,
+        toggleActive: true
+      });
+    </script>
+    <script src="bootstrap-datepicker.min.js"></script>
     <script>window.NASASearchController.init()</script>
   </body>
 </html>
+
+
+<!--
+
+  TO DO:
+  -get the date picker to work
+  -what's with the zoom out on local host?
+  -single page webpage (sticky side bar as a nav)
+  -make the three horizontal sections distinct
+
+  https://github.com/uxsolutions/bootstrap-datepicker
+  https://uxsolutions.github.io/bootstrap-datepicker/?markup=embedded&format=&weekStart=&startDate=&endDate=&startView=0&minViewMode=0&maxViewMode=4&todayBtn=true&clearBtn=false&language=en&orientation=auto&multidate=&multidateSeparator=&todayHighlight=on&keyboardNavigation=on&forceParse=on&toggleActive=on#sandbox
+
+  -->
