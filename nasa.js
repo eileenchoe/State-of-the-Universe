@@ -2,6 +2,13 @@
 window.NASASearchController = (() => {
     return {
         init: () => {
+             $('[data-toggle="popover"]').popover({ 
+                html : true,
+                content: function() {
+                return $('#sandbox-container').html();
+                }
+            });
+
             var apodImage = $("#apodImage");
             var earthImage = $("#earth");
             var apodDescription = $("#description");
