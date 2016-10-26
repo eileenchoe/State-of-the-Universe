@@ -2,6 +2,8 @@
 window.NASASearchController = (() => {
     return {
         init: () => {
+             
+            // Popover display of Calendar
              $('[data-toggle="popover"]').popover({ 
                 html : true,
                 content: function() {
@@ -49,7 +51,7 @@ window.NASASearchController = (() => {
             marsButton.click(() => {
                 console.log("clicked");
                 $("body,html").animate({
-                    scrollTop: $( $(this).attr('href')).offset().top
+                    scroll: $( $(this).attr('href')).offset().top
                 }, 600);
             });
 
@@ -212,9 +214,11 @@ window.NASASearchController = (() => {
 
 /*
 TO DO LIST:
-- Make Calendar a Popover : http://www.w3schools.com/bootstrap/bootstrap_popover.asp
-    <i class="fa fa-calendar" aria-hidden="true"></i> 
-- Implement Scroll Spy : http://www.w3schools.com/Bootstrap/bootstrap_scrollspy.asp
+- Make Calendar Change APOD
+- Unit Testing
+- Blue Marble Stuff
+- Implement Scroll Spy and Sticky Menu : http://www.w3schools.com/Bootstrap/bootstrap_scrollspy.asp
+- Parameterize Functions
 
 Specific navcam request
 https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?earth_date=2016-10-22&api_key=yIzbNo0iFAp
