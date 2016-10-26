@@ -12,26 +12,37 @@
     <link rel="stylesheet" href="lib/bootstrap-datepicker3.min.css">
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
     <script src="https://use.fontawesome.com/23710c8728.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Space+Mono" rel="stylesheet">
   </head>
   <body>
+  <style>
+    #jumbo-sub {
+      font-family: 'Space Mono', monospace;
+    }
+  </style>
     <div class="jumbotron">
       <div class="container">
         <h1>State of the Universe</h1>
-        <p>What's the universe up to this week?</p>
+        <p id="jumbo-sub">What's the universe up to this week?</p>
+         <div class="btn-group" role="group" aria-label="...">
+          <button id="apod-button" href="#apod-section" type="button" class="btn btn-default">Astonomy Picture of the Day</button>
+          <button id="mars-button" href="#mars-section"type="button" class="btn btn-default">Mars</button>
+          <button id="earth-button" href="#earth-section" type="button" class="btn btn-default">Earth</button>
+        </div>
       </div>
     </div>
 
     <div class="container">
       <!--Astronomy Picture of the Day-->
+      <h2 id="apod-section">Astronomy Picture of the Day</h2>
+      <h4 id="apodTitle"></h4>
       <div id="apodContainer">
-        <h2>Astronomy Picture of the Day</h2>
         <div class="row">
           <div class="col-md-6">
-            <h3 id="apodTitle"></h3>
             <div class="img-container">
               <i id="loadSpinner" class="fa fa-refresh fa-spin fa-3x fa-fw"></i>
               <span class="sr-only">Loading...</span>
-              <img id="apodImage" class="img-responsive" alt="Responsive image" height="100px"></img>
+              <img id="apodImage" class="img-responsive" alt="Responsive image"></img>
             </div>
           <!--http://www.bootstraptoggle.com/-->
            <input id="toggle-event" type="checkbox" checked data-toggle="toggle" data-on="HD On" data-off="HD Off" data-onstyle="default" data-width="200">
@@ -39,33 +50,36 @@
           </div>
           <div class="col-md-6">
             <p id="description"></p>
-            <div id="sandbox-container"></div>
           </div>
         </div>
       </div>
+      <div id="sandbox-container"></div>
 
 
       <!--Curiosity on Mars-->
       <div class="row">
-        <h2>Curosity Rover on Mars</h2>
+        <h2 id="mars-section">Curosity Rover on Mars</h2>
         <div class="col-xs-12">
-          <h3>Earth Date</h3>
-          <p id="earth-date"></p>
-          <h3>Sol</h3>
-          <p id="sol"></p>
+          <div class="well">
+            <h4>Earth Date</h4>
+            <p id="earth-date"></p>
+            <h4>Sol</h4>
+            <p id="sol"></p>
+          </div>
         </div>
         <div class="btn-group" role="group" aria-label="...">
-          <button type="button" class="btn btn-default">NavCam</button>
-          <button type="button" class="btn btn-default">MastCam</button>
-          <button type="button" class="btn btn-default">ChemCam</button>
+          <button id="NavCam" type="button" class="btn btn-default">NavCam</button>
+          <button id="MastCam" type="button" class="btn btn-default">MastCam</button>
+          <button id="ChemCam" type="button" class="btn btn-default">ChemCam</button>
         </div>
+        <i id="loadSpinnerMars" class="fa fa-refresh fa-spin fa-3x fa-fw"></i>
         <div class="row image-result-container">
         </div>
       </div>
 
       <!--DSCOVR's Earth Polychromatic Imaging Camera (EPIC) instrument-->
       <div class="row">
-        <h2>The Blue Marble</h2>
+        <h2 id="earth-section">The Blue Marble</h2>
         <div class="col-xs-12">
           <img id="earth" class="img-responsive" alt"Responsive image"></img>
         </div>

@@ -10,20 +10,41 @@ window.NASASearchController = (() => {
             var earthDate = $("#earth-date");
             var imageResultContainer = $(".image-result-container");
             var loadSpinner = $("#loadSpinner");
-            var maxDateCuriosity;
+            var loadSpinnerMars = $("#loadSpinnerMars");
+            var maxDateCuriosity="default";
 
+            //Cameras
+            var chemCam = $("#ChemCam");
+            var mastCam = $("#MastCam");
+            var navCam = $("#NavCam");
+
+            //Button
+            var marsButton = $("#mars-button");
+            var apodButton = $("#apod-button");
+            var earthButton = $("#earth-button");
+
+            //Getting the Current Date
             var d = new Date();
             var month = d.getMonth() + 1;
             var day = d.getDate();
             var todaysDate = d.getFullYear() + '-' + (('' + month).length < 2 ? '0' : '') + month + '-' + 
             (('' + day).length < 2 ? '0' : '') + day;
+
             //find the height of the page
             var windowHeight = $(window).height();
             var jumbotronHeight = $(".jumbotron").height();
             var apodContainer = $("#apodContainer");
-            console.log(windowHeight);
-            console.log(jumbotronHeight);
+            //console.log(windowHeight);
+            //console.log(jumbotronHeight);
             //apodContainer.height(windowHeight-jumbotronHeight);
+
+            // Navigation Controls
+            marsButton.click(() => {
+                console.log("clicked");
+                $("body,html").animate({
+                    scrollTop: $( $(this).attr('href')).offset().top
+                }, 600);
+            });
 
             // ASTRONOMY PICTURE OF THE DAY
             $.getJSON("http://api.nasa.gov/planetary/apod", {
@@ -46,20 +67,12 @@ window.NASASearchController = (() => {
             });
 
             // MARS CURIOSITY
-            $.getJSON("http://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos", {
-                // first JSON call is to determine the most current photo date available for rover
-                earth_date: "2016-10-20",
-                api_key: "yIzbNo0iFApOqbQS5BBpCH04hC3v3Opuwii8iw7Q",
-            }).done((info) => {
-                maxDateCuriosity = info.photos[0].rover.max_date;
-                console.log(maxDateCuriosity);
+            var getMarsImagesAndAppend = (camera, date) => {
                 $.getJSON("http://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos", {
-                    //earth_date: maxDateCuriosity,
-                    earth_date: "2016-10-20",
+                    earth_date: date,
+                    camera: camera,
                     api_key: "yIzbNo0iFApOqbQS5BBpCH04hC3v3Opuwii8iw7Q",
-                    camera: "NAVCAM",
                 }).done((result) => {
-                    console.log("Here");
                     imageResultContainer.empty().append(
                         result.photos.map((image) => {
                             return $("<div></div>").addClass("col-xs-6 col-md-6").append(
@@ -74,7 +87,104 @@ window.NASASearchController = (() => {
                     );
                     sol.text(result.photos[0].sol);
                     earthDate.text(result.photos[0].earth_date);
+                })
+            }
+
+            $.getJSON("http://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos", {
+                // first JSON call is to determine the most current photo date available for rover
+                earth_date: "2016-10-20",
+                api_key: "yIzbNo0iFApOqbQS5BBpCH04hC3v3Opuwii8iw7Q",
+            }).done((info) => {
+                //how do you save this?!?! 
+                maxDateCuriosity = info.photos[0].rover.max_date;
+                $.getJSON("http://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos", {
+                    earth_date: maxDateCuriosity,
+                    //earth_date: "2016-10-20",
+                    api_key: "yIzbNo0iFApOqbQS5BBpCH04hC3v3Opuwii8iw7Q",
+                    camera: "NAVCAM",
+                }).done((result) => {
+                    imageResultContainer.empty().append(
+                        result.photos.map((image) => {
+                            return $("<div></div>").addClass("col-xs-6 col-md-6").append(
+                                $("<a></a>").addClass("thumbnail").append(
+                                    $("<img/>").attr({
+                                        src: image.img_src,
+                                        alt: image.full_name,
+                                    })
+                                )
+                            );
+                        })
+                    );
+                    sol.text(result.photos[0].sol);
+                    earthDate.text(result.photos[0].earth_date);
+                }).fail(() => {
+                    maxDateCuriosity = "2016-10-20";
+                    $.getJSON("http://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos", {
+                    earth_date: maxDateCuriosity,
+                    //earth_date: "2016-10-20",
+                    api_key: "yIzbNo0iFApOqbQS5BBpCH04hC3v3Opuwii8iw7Q",
+                    camera: "NAVCAM",
+                }).done((result) => {
+                    imageResultContainer.empty().append(
+                        result.photos.map((image) => {
+                            return $("<div></div>").addClass("col-xs-6 col-md-6").append(
+                                $("<a></a>").addClass("thumbnail").append(
+                                    $("<img/>").attr({
+                                        src: image.img_src,
+                                        alt: image.full_name,
+                                    })
+                                )
+                            );
+                        })
+                    );
+                    sol.text(result.photos[0].sol);
+                    earthDate.text(result.photos[0].earth_date);
+                    })
                 });
+                loadSpinnerMars.remove();
+                //console.log(maxDateCuriosity);
+                //trying to to the chemCam Switch in here
+                chemCam.click(() => {
+                    console.log("chemCam");
+                    $.getJSON("http://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos", {
+                        earth_date: maxDateCuriosity,
+                        //earth_date: "2016-10-20",
+                        api_key: "yIzbNo0iFApOqbQS5BBpCH04hC3v3Opuwii8iw7Q",
+                        camera: "FHAZ",
+                    }).done((result) => {
+                    imageResultContainer.empty().append(
+                        result.photos.map((image) => {
+                            return $("<div></div>").addClass("col-xs-6 col-md-6").append(
+                                $("<a></a>").addClass("thumbnail").append(
+                                    $("<img/>").attr({
+                                        src: image.img_src,
+                                        alt: image.full_name,
+                                    })
+                                )
+                            );
+                        })
+                    );
+                    sol.text(result.photos[0].sol);
+                    earthDate.text(result.photos[0].earth_date);
+                    });
+                });
+            });
+
+            console.log(maxDateCuriosity);
+
+            chemCam.click(() => {
+                console.log("chemCam");
+                //$.getJSON("")
+            });
+
+            mastCam.click(() => {
+                console.log("mastcam");
+                //$.getJSON("")
+            });
+
+            navCam.click(() => {
+                console.log("navcam");
+                //$.getJSON("")
             });
 
             // BLUE MARBLE
@@ -94,6 +204,11 @@ window.NASASearchController = (() => {
 
 
 /*
+TO DO LIST:
+- Make Calendar a Popover : http://www.w3schools.com/bootstrap/bootstrap_popover.asp
+    <i class="fa fa-calendar" aria-hidden="true"></i> 
+- Implement Scroll Spy : http://www.w3schools.com/Bootstrap/bootstrap_scrollspy.asp
+
 Specific navcam request
 https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?earth_date=2016-10-22&api_key=yIzbNo0iFAp
 OqbQS5BBpCH04hC3v3Opuwii8iw7Q&camera=navcam
