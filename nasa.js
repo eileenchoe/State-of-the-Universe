@@ -2,15 +2,46 @@
 window.NASASearchController = (() => {
     return {
         init: () => {
-             
-            // Popover display of Calendar
-             $('[data-toggle="popover"]').popover({ 
-                html : true,
-                content: function() {
-                return $('#sandbox-container').html();
-                }
+
+            var clickedDate;
+
+            $('#datepicker').datepicker({
+                todayBtn: true,
+                todayHighlight: true,
+                toggleActive: true,
+                format: "yyyy-mm-dd",
             });
 
+            $('#datepicker').on("changeDate", function() {
+                $('#my_hidden_input').val(
+                    $('#datepicker').datepicker('getFormattedDate')
+                );
+                clickedDate = $('#datepicker').datepicker('getFormattedDate');
+                getAPODImage(clickedDate);
+                getMarsImagesAndAppend("NAVCAM", clickedDate);
+                chemCam.click(() => {
+                    getMarsImagesAndAppend("CHEMCAM", clickedDate);
+                });
+                mastCam.click(() => {
+                    getMarsImagesAndAppend("FHAZ", clickedDate);
+                });
+                navCam.click(() => {
+                    getMarsImagesAndAppend("NAVCAM", clickedDate);
+                });
+
+                fHazCam.click(() => {
+                    getMarsImagesAndAppend("FHAZ", clickedDate);
+                });
+
+                rHazCam.click(() => {
+                    getMarsImagesAndAppend("RHAZ", clickedDate);
+                });
+
+                MAHLI.click(() => {
+                    getMarsImagesAndAppend("MAHLI", clickedDate);
+                });
+            });
+                 
             var apodImage = $("#apodImage");
             var earthImage = $("#earth");
             var apodDescription = $("#description");
@@ -20,12 +51,16 @@ window.NASASearchController = (() => {
             var imageResultContainer = $(".image-result-container");
             var loadSpinner = $("#loadSpinner");
             var loadSpinnerMars = $("#loadSpinnerMars");
+            var curiosityMsg = $("#curiosity-msg");
             var maxDateCuriosity="default";
 
             //Cameras
             var chemCam = $("#ChemCam");
             var mastCam = $("#MastCam");
             var navCam = $("#NavCam");
+            var fHazCam = $("#FHazCam");
+            var rHazCam = $("#RHazCam");
+            var MAHLI = $("#MAHLI");
 
             //Button
             var marsButton = $("#mars-button");
@@ -39,49 +74,52 @@ window.NASASearchController = (() => {
             var todaysDate = d.getFullYear() + '-' + (('' + month).length < 2 ? '0' : '') + month + '-' + 
             (('' + day).length < 2 ? '0' : '') + day;
 
-            //find the height of the page
-            var windowHeight = $(window).height();
-            var jumbotronHeight = $(".jumbotron").height();
-            var apodContainer = $("#apodContainer");
-            //console.log(windowHeight);
-            //console.log(jumbotronHeight);
-            //apodContainer.height(windowHeight-jumbotronHeight);
-
-            // Navigation Controls
-            marsButton.click(() => {
-                console.log("clicked");
-                $("body,html").animate({
-                    scroll: $( $(this).attr('href')).offset().top
-                }, 600);
-            });
+            function dateYesterday () {
+                var d = new Date();
+                d.setDate(d.getDate() - 1);
+                var month = d.getMonth() + 1;
+                var day = d.getDate();
+                var date = d.getFullYear() + '-' + (('' + month).length < 2 ? '0' : '') + month + '-' + 
+                (('' + day).length < 2 ? '0' : '') + day;
+                return date;
+            }   
 
             // ASTRONOMY PICTURE OF THE DAY
-            $.getJSON("http://api.nasa.gov/planetary/apod", {
-                date: todaysDate,
-                api_key: "yIzbNo0iFApOqbQS5BBpCH04hC3v3Opuwii8iw7Q",
-            }).done((result) => {
-                apodImage.attr({
-                    src: result.hdurl,
-                    alt: result.title,
+
+            var getAPODImage = (date) => {
+                $.getJSON("//api.nasa.gov/planetary/apod", {
+                    date: date,
+                    api_key: "IBxDgONe1zyvYY7kVo6ZG13tm0rV7wYQmHQbRix9",
+                }).done((result) => {
+                    apodImage.empty();
+                    apodImage.attr({
+                        src: result.hdurl,
+                        alt: result.title,
+                    });
+                    apodDescription.text(result.explanation);
+                    apodTitle.text(result.title);
+                    loadSpinner.remove();
+                }).fail(() => {
+                    console.log("fail");
+                    loadSpinner.remove();
+                    apodImage.attr({
+                        src: "defaults/eagleaurora.jpg",
+                    })
+                    apodDescription.text("This is a temporary picture");
+                    apodTitle.text("Eagle Aurora");
                 });
-                apodDescription.text(result.explanation);
-                apodTitle.text(result.title);
-                loadSpinner.remove();
-            }).fail(() => {
-                console.log("fail");
-                loadSpinner.remove();
-                apodImage.attr({
-                    src: "defaults/eagleaurora.jpg",
-                })
-            });
+            }
+
+            getAPODImage(todaysDate);
 
             // MARS CURIOSITY
             var getMarsImagesAndAppend = (camera, date) => {
-                $.getJSON("http://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos", {
+                $.getJSON("//api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos", {
                     earth_date: date,
                     camera: camera,
-                    api_key: "yIzbNo0iFApOqbQS5BBpCH04hC3v3Opuwii8iw7Q",
+                    api_key: "IBxDgONe1zyvYY7kVo6ZG13tm0rV7wYQmHQbRix9",
                 }).done((result) => {
+                    curiosityMsg.text("Yes Photos");
                     imageResultContainer.empty().append(
                         result.photos.map((image) => {
                             return $("<div></div>").addClass("col-xs-6 col-md-6").append(
@@ -94,115 +132,47 @@ window.NASASearchController = (() => {
                             );
                         })
                     );
+                    loadSpinnerMars.remove();
                     sol.text(result.photos[0].sol);
                     earthDate.text(result.photos[0].earth_date);
+                }).fail(() =>{
+                    imageResultContainer.empty();
+                    curiosityMsg.text("No Photos");
+                    console.log("requestfailed")
                 })
             }
-
-            $.getJSON("http://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos", {
-                // first JSON call is to determine the most current photo date available for rover
-                earth_date: "2016-10-20",
-                api_key: "yIzbNo0iFApOqbQS5BBpCH04hC3v3Opuwii8iw7Q",
-            }).done((info) => {
-                //how do you save this?!?! 
-                maxDateCuriosity = info.photos[0].rover.max_date;
-                $.getJSON("http://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos", {
-                    earth_date: maxDateCuriosity,
-                    //earth_date: "2016-10-20",
-                    api_key: "yIzbNo0iFApOqbQS5BBpCH04hC3v3Opuwii8iw7Q",
-                    camera: "NAVCAM",
-                }).done((result) => {
-                    imageResultContainer.empty().append(
-                        result.photos.map((image) => {
-                            return $("<div></div>").addClass("col-xs-6 col-md-6").append(
-                                $("<a></a>").addClass("thumbnail").append(
-                                    $("<img/>").attr({
-                                        src: image.img_src,
-                                        alt: image.full_name,
-                                    })
-                                )
-                            );
-                        })
-                    );
-                    sol.text(result.photos[0].sol);
-                    earthDate.text(result.photos[0].earth_date);
-                }).fail(() => {
-                    maxDateCuriosity = "2016-10-20";
-                    $.getJSON("http://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos", {
-                    earth_date: maxDateCuriosity,
-                    //earth_date: "2016-10-20",
-                    api_key: "yIzbNo0iFApOqbQS5BBpCH04hC3v3Opuwii8iw7Q",
-                    camera: "NAVCAM",
-                }).done((result) => {
-                    imageResultContainer.empty().append(
-                        result.photos.map((image) => {
-                            return $("<div></div>").addClass("col-xs-6 col-md-6").append(
-                                $("<a></a>").addClass("thumbnail").append(
-                                    $("<img/>").attr({
-                                        src: image.img_src,
-                                        alt: image.full_name,
-                                    })
-                                )
-                            );
-                        })
-                    );
-                    sol.text(result.photos[0].sol);
-                    earthDate.text(result.photos[0].earth_date);
-                    })
-                });
-                loadSpinnerMars.remove();
-                //console.log(maxDateCuriosity);
-                //trying to to the chemCam Switch in here
-                chemCam.click(() => {
-                    console.log("chemCam");
-                    $.getJSON("http://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos", {
-                        earth_date: maxDateCuriosity,
-                        //earth_date: "2016-10-20",
-                        api_key: "yIzbNo0iFApOqbQS5BBpCH04hC3v3Opuwii8iw7Q",
-                        camera: "FHAZ",
-                    }).done((result) => {
-                    imageResultContainer.empty().append(
-                        result.photos.map((image) => {
-                            return $("<div></div>").addClass("col-xs-6 col-md-6").append(
-                                $("<a></a>").addClass("thumbnail").append(
-                                    $("<img/>").attr({
-                                        src: image.img_src,
-                                        alt: image.full_name,
-                                    })
-                                )
-                            );
-                        })
-                    );
-                    sol.text(result.photos[0].sol);
-                    earthDate.text(result.photos[0].earth_date);
-                    });
-                });
-            });
-
-            console.log(maxDateCuriosity);
-
             chemCam.click(() => {
-                console.log("chemCam");
-                //$.getJSON("")
+                getMarsImagesAndAppend("CHEMCAM", todaysDate);
             });
-
             mastCam.click(() => {
-                console.log("mastcam");
-                //$.getJSON("")
+                getMarsImagesAndAppend("FHAZ", todaysDate);
             });
-
             navCam.click(() => {
-                console.log("navcam");
-                //$.getJSON("")
+                getMarsImagesAndAppend("NAVCAM", todaysDate);
             });
 
+            fHazCam.click(() => {
+                getMarsImagesAndAppend("FHAZ", todaysDate);
+            });
+
+            rHazCam.click(() => {
+                getMarsImagesAndAppend("RHAZ", todaysDate);
+            });
+
+            MAHLI.click(() => {
+                getMarsImagesAndAppend("MAHLI", todaysDate);
+            });
+
+            getMarsImagesAndAppend("NAVCAM", todaysDate);
+           
             // BLUE MARBLE
-            $.getJSON("http://epic.gsfc.nasa.gov/api/images.php").done((result) => {
-                var imagePage = "http://api.nasa.gov/EPIC/archive/natural/png/" + result[0].image + ".png";
+            $.getJSON("//epic.gsfc.nasa.gov/api/images.php").done((result) => {
+                console.log(result[0]);
+                var imagePage = "//api.nasa.gov/EPIC/archive/natural/png/" + result[0].image + ".png";
                 earthImage.attr(
                     {
                         src: imagePage + "?" + $.param(
-                            {api_key: "yIzbNo0iFApOqbQS5BBpCH04hC3v3Opuwii8iw7Q"}
+                            {api_key: "IBxDgONe1zyvYY7kVo6ZG13tm0rV7wYQmHQbRix9"}
                         )
                     }
                 );
@@ -214,6 +184,9 @@ window.NASASearchController = (() => {
 
 /*
 TO DO LIST:
+
+// ALT KEY: IBxDgONe1zyvYY7kVo6ZG13tm0rV7wYQmHQbRix9
+
 - Make Calendar Change APOD
 - Unit Testing
 - Blue Marble Stuff
