@@ -3,42 +3,81 @@ window.NASASearchController = (() => {
     return {
         init: () => {
 
-            var clickedDate;
+            var dateFromToday = (delta) => {
+                var d = new Date();
+                d.setDate(d.getDate() + delta);
+                var month = d.getMonth() + 1;
+                var day = d.getDate();
+                var date = d.getFullYear() + '-' + (('' + month).length < 2 ? '0' : '') + month + '-' + 
+                (('' + day).length < 2 ? '0' : '') + day;
+                return date;
+            };
 
+            var todaysDate = dateFromToday(0);
+            var tomorrow = dateFromToday(1);
+            var yearForward = dateFromToday(365);
+
+            var globalDate = todaysDate;
+
+            // console.log(dateFromToday(0)); // today
+            // console.log(dateFromToday(-1)); // yesterday
+            // console.log(dateFromToday(1)); // tomorrow
+
+            // Measure jumbotron height and set sidebar initial placement
+            var jumbotronHeight = $("#jumbo-header").height();
+            $("#nav-panel").css("top", jumbotronHeight + "px");
+
+
+            $(window).scroll(() => {
+                // jumbotronHeight = $("#jumbo-header").height();
+                // $("#nav-panel").css("top", jumbotronHeight + "px");
+                // $("#nav-panel").css("top", "200px");
+            }); 
+
+
+            var clickedDate;
             $('#datepicker').datepicker({
                 todayBtn: true,
                 todayHighlight: true,
                 toggleActive: true,
                 format: "yyyy-mm-dd",
+                datesDisabled: [tomorrow, yearForward],
+                // Issue: dates disabled max range doesn't recognize the end date
             });
 
+            // Proof of Concept: this works
+            $('#datepicker').datepicker('update', todaysDate);
+            console.log($('#datepicker').datepicker('getFormattedDate'));
+
             $('#datepicker').on("changeDate", function() {
-                $('#my_hidden_input').val(
-                    $('#datepicker').datepicker('getFormattedDate')
-                );
+                console.log($('#datepicker').datepicker('getFormattedDate'));
+
                 clickedDate = $('#datepicker').datepicker('getFormattedDate');
-                getAPODImage(clickedDate);
-                getMarsImagesAndAppend("NAVCAM", clickedDate);
+                globalDate = clickedDate;
+
+                getAPODImage(globalDate);
+
+                getMarsImagesAndAppend("NAVCAM", globalDate);
                 chemCam.click(() => {
-                    getMarsImagesAndAppend("CHEMCAM", clickedDate);
+                    getMarsImagesAndAppend("CHEMCAM", globalDate);
                 });
                 mastCam.click(() => {
-                    getMarsImagesAndAppend("FHAZ", clickedDate);
+                    getMarsImagesAndAppend("FHAZ", globalDate);
                 });
                 navCam.click(() => {
-                    getMarsImagesAndAppend("NAVCAM", clickedDate);
+                    getMarsImagesAndAppend("NAVCAM", globalDate);
                 });
 
                 fHazCam.click(() => {
-                    getMarsImagesAndAppend("FHAZ", clickedDate);
+                    getMarsImagesAndAppend("FHAZ", globalDate);
                 });
 
                 rHazCam.click(() => {
-                    getMarsImagesAndAppend("RHAZ", clickedDate);
+                    getMarsImagesAndAppend("RHAZ", globalDate);
                 });
 
                 MAHLI.click(() => {
-                    getMarsImagesAndAppend("MAHLI", clickedDate);
+                    getMarsImagesAndAppend("MAHLI", globalDate);
                 });
             });
                  
@@ -52,9 +91,9 @@ window.NASASearchController = (() => {
             var loadSpinner = $("#loadSpinner");
             var loadSpinnerMars = $("#loadSpinnerMars");
             var curiosityMsg = $("#curiosity-msg");
-            var maxDateCuriosity="default";
+            // var maxDateCuriosity="default";
 
-            //Cameras
+            // Cameras
             var chemCam = $("#ChemCam");
             var mastCam = $("#MastCam");
             var navCam = $("#NavCam");
@@ -62,32 +101,10 @@ window.NASASearchController = (() => {
             var rHazCam = $("#RHazCam");
             var MAHLI = $("#MAHLI");
 
-            //Button
-            var marsButton = $("#mars-button");
-            var apodButton = $("#apod-button");
-            var earthButton = $("#earth-button");
-
-            //Getting the Current Date
-            var d = new Date();
-            var month = d.getMonth() + 1;
-            var day = d.getDate();
-            var todaysDate = d.getFullYear() + '-' + (('' + month).length < 2 ? '0' : '') + month + '-' + 
-            (('' + day).length < 2 ? '0' : '') + day;
-
-            function dateYesterday () {
-                var d = new Date();
-                d.setDate(d.getDate() - 1);
-                var month = d.getMonth() + 1;
-                var day = d.getDate();
-                var date = d.getFullYear() + '-' + (('' + month).length < 2 ? '0' : '') + month + '-' + 
-                (('' + day).length < 2 ? '0' : '') + day;
-                return date;
-            }   
-
             // ASTRONOMY PICTURE OF THE DAY
 
             var getAPODImage = (date) => {
-                $.getJSON("//api.nasa.gov/planetary/apod", {
+                $.getJSON("https://api.nasa.gov/planetary/apod", {
                     date: date,
                     api_key: "IBxDgONe1zyvYY7kVo6ZG13tm0rV7wYQmHQbRix9",
                 }).done((result) => {
@@ -104,22 +121,23 @@ window.NASASearchController = (() => {
                     loadSpinner.remove();
                     apodImage.attr({
                         src: "defaults/eagleaurora.jpg",
-                    })
+                    });
                     apodDescription.text("This is a temporary picture");
                     apodTitle.text("Eagle Aurora");
                 });
-            }
+            };
 
             getAPODImage(todaysDate);
 
             // MARS CURIOSITY
             var getMarsImagesAndAppend = (camera, date) => {
-                $.getJSON("//api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos", {
+                $.getJSON("https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos", {
                     earth_date: date,
                     camera: camera,
                     api_key: "IBxDgONe1zyvYY7kVo6ZG13tm0rV7wYQmHQbRix9",
+                    callback: "?",
                 }).done((result) => {
-                    curiosityMsg.text("Yes Photos");
+                    curiosityMsg.text("");
                     imageResultContainer.empty().append(
                         result.photos.map((image) => {
                             return $("<div></div>").addClass("col-xs-6 col-md-6").append(
@@ -138,9 +156,9 @@ window.NASASearchController = (() => {
                 }).fail(() =>{
                     imageResultContainer.empty();
                     curiosityMsg.text("No Photos");
-                    console.log("requestfailed")
-                })
-            }
+                });
+            };
+
             chemCam.click(() => {
                 getMarsImagesAndAppend("CHEMCAM", todaysDate);
             });
@@ -167,7 +185,6 @@ window.NASASearchController = (() => {
            
             // BLUE MARBLE
             $.getJSON("//epic.gsfc.nasa.gov/api/images.php").done((result) => {
-                console.log(result[0]);
                 var imagePage = "//api.nasa.gov/EPIC/archive/natural/png/" + result[0].image + ".png";
                 earthImage.attr(
                     {
@@ -187,20 +204,11 @@ TO DO LIST:
 
 // ALT KEY: IBxDgONe1zyvYY7kVo6ZG13tm0rV7wYQmHQbRix9
 
-- Make Calendar Change APOD
 - Unit Testing
 - Blue Marble Stuff
-- Implement Scroll Spy and Sticky Menu : http://www.w3schools.com/Bootstrap/bootstrap_scrollspy.asp
-- Parameterize Functions
-
-Specific navcam request
-https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?earth_date=2016-10-22&api_key=yIzbNo0iFAp
-OqbQS5BBpCH04hC3v3Opuwii8iw7Q&camera=navcam
-
-test:
--when container loads, has initial height
-
+- Do better defaults when there is no picture (try yesterday for the default load, if none then display an error messate)
+- Format the earth date to Sol better.
+- Menu Bar responding to scroll
+- Protecting variables
 
 */
-// https://api.nasa.gov/#getting-started
-// https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY

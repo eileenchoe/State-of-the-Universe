@@ -1,9 +1,44 @@
-<!--
-    Compare the fixture to the actual web page. Note how the fixture _distills_ the content to just the essential
-    elements for the app. This is why they are copies. The web page can be laid out or redesigned as much as you like,
-    but as long as the elements remain the same, this fixture will remain valid.
+<!-- JUMBOTRON -->
+<div id="jumbo-header" class="row">
+    <div id="section1" class="jumbotron">
+     	<div class="container">
+          <h1>State of the Universe</h1>
+        </div>
+    </div>
+</div>
 
-    Of course, if the functionality changes to the point that the controller JavaScript needs to also change, then the
-    fixture would have to be revised.
--->
-<input id="toggle-event" type="checkbox" checked data-toggle="toggle" data-on="HD On" data-off="HD Off" data-onstyle="default" data-width="200">
+<!-- MENU BAR -->
+<nav class="col-xs-3" id="myScrollspy">
+	<ul id="nav-panel" class="nav nav-pills nav-stacked">
+	    <li><a href="#section1">Astronomy Picture of the Day</a></li>
+	    <li><a href="#section2">Mars Curiosity Rover</a></li>
+	    <li><a href="#section3">Earth</a></li>
+	    <div id="datepicker"></div>
+	    <input type="hidden" id="my_hidden_input">
+	</ul>
+</nav>
+
+<!-- APOD -->
+<i id="loadSpinner" class="fa fa-refresh fa-spin fa-3x fa-fw"></i>
+<span class="sr-only">Loading...</span>
+<img id="apodImage" class="img-responsive" alt="Responsive image"></img>
+<h4 id="apodTitle" class="text-center"></h4>
+<p id="description"></p>
+
+<!-- CURIOSITY ROVER -->
+<div class="btn-group" role="group" aria-label="...">
+    <button id="NavCam" type="button" class="btn btn-default">NavCam</button>
+    <button id="MastCam" type="button" class="btn btn-default">MastCam</button>
+    <button id="ChemCam" type="button" class="btn btn-default">ChemCam</button>
+    <button id="FHazCam" type="button" class="btn btn-default">Front HazCam</button>
+    <button id="RHazCam" type="button" class="btn btn-default">Rear HazCam</button>
+    <button id="MAHLI" type="button" class="btn btn-default">MAHLI</button>
+</div>
+
+<p id="curiosity-msg"></p>
+<i id="loadSpinnerMars" class="fa fa-refresh fa-spin fa-3x fa-fw"></i>
+<div class="row image-result-container"></div>
+
+
+<!-- BLUE MARBLE -->
+<img id="earth" class="img-responsive" alt"Responsive image"></img>
