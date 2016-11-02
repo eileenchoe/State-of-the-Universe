@@ -8,17 +8,24 @@
     <script>try{Typekit.load({ async: true });}catch(e){}</script>
     <title>State of the Universe</title>
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <link rel="styleshee
+    t" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="lib/bootstrap-datepicker3.min.css">
     <link href="//gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
     <script src="//use.fontawesome.com/23710c8728.js"></script>
     <link href="//fonts.googleapis.com/css?family=Space+Mono" rel="stylesheet">
+    <link href="//fonts.googleapis.com/css?family=Permanent+Marker" rel="stylesheet">
   </head>
   <body data-spy="scroll" data-target="#myScrollspy" data-offset="20">
   <style>
-    #jumbo-sub, #curiosity-msg {
+    #jumbo-sub, #curiosity-msg, #curiosity-warning-msg{
       font-family: 'Space Mono', monospace;
     }
+
+    #instructions,#curiosity-instr-head, #curiosity-instr-body, #curiosity-warning-msg{
+      font-family: 'Permanent Marker', cursive;
+    }
+
     body {
         position: relative;
     }
@@ -31,8 +38,8 @@
   }
   </style>
   <div class="container">
-    <div id="jumbo-header" class="row">
-      <div id="section1" class="jumbotron">
+    <div id="section1" id="jumbo-header" class="row">
+      <div class="jumbotron">
         <div class="container">
           <h1>State of the Universe</h1>
           <h4 id="jumbo-sub">What's the universe up to today?</h4>
@@ -45,14 +52,13 @@
           <li><a href="#section1">Astronomy Picture of the Day</a></li>
           <li><a href="#section2">Mars Curiosity Rover</a></li>
           <li><a href="#section3">Earth</a></li>
-          <br>
           <div id="datepicker"></div>
           <input type="hidden" id="my_hidden_input">
         </ul>
       </nav>
       <div class="col-xs-9">  
         <!--Astronomy Picture of the Day-->
-        <h3 id="apod-section">Astronomy Picture of the Day</h3>
+        <h2 id="apod-section">Astronomy Picture of the Day</h2>
         <div>
           <div class="row">
             <div class="col-md-6">
@@ -68,35 +74,58 @@
             </div>
           </div>
         </div>
+        <br><br><br>
 
         <!--Curiosity on Mars-->
         <div class="row" id="section2">
-          <h3 id="mars-section">Curiosity Rover on Mars</h3>
-          <div class="col-xs-12">
-            <div class="well">
-              <h4>Earth Date</h4>
-              <p id="earth-date"></p>
-              <h4>Sol</h4>
-              <p id="sol"></p>
+          <h2 id="mars-section">Curiosity Rover on Mars</h2>
+          <div class="row">
+              <div class="col-xs-4">
+                <img src="photos/curiosity-rover.jpg" class="img-rounded img-responsive">
+              </div>
+              <div class="col-xs-8">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae eros consectetur, scelerisque nisi id, elementum arcu. Nam rutrum nunc ligula, non interdum magna ornare ac. Suspendisse potenti. Pellentesque tellus tellus, tristique id ante quis, scelerisque consectetur risus. Morbi eget dictum libero. Morbi mattis elit a malesuada vestibulum. Suspendisse et semper purus. Mauris a mauris quis erat ullamcorper suscipit. Etiam vestibulum tellus in ultrices ultricies. Etiam rutrum consequat nulla aliquam ullamcorper. Nam sed efficitur erat. Nam bibendum mi at elit eleifend laoreet. Ut in tempor nunc, quis facilisis leo. Curabitur lacus augue, consectetur tempus ipsum sed, convallis aliquet tortor. Nunc sit amet velit eget metus euismod luctus.
+
+                Donec placerat ornare lacinia. Praesent pharetra auctor risus in ultricies. Vivamus viverra sed magna ut sagittis. Vestibulum id accumsan quam. Vestibulum sit amet vulputate purus. Sed varius, eros ut pulvinar consequat, est arcu vulputate enim, et accumsan elit enim at sem. Fusce ullamcorper eu enim vitae pretium. Phasellus faucibus ut sem et tristique. Maecenas consequat pulvinar urna vitae venenatis. Sed sodales ex eget vulputate lacinia. In interdum sollicitudin elit nec bibendum. Nunc eu leo sed nibh commodo sollicitudin. Sed sit amet aliquam purus.</p>
             </div>
           </div>
-          <div class="btn-group" role="group" aria-label="...">
-            <button id="NavCam" type="button" class="btn btn-default">NavCam</button>
-            <button id="MastCam" type="button" class="btn btn-default">MastCam</button>
-            <button id="ChemCam" type="button" class="btn btn-default">ChemCam</button>
-            <button id="FHazCam" type="button" class="btn btn-default">Front HazCam</button>
-            <button id="RHazCam" type="button" class="btn btn-default">Rear HazCam</button>
-            <button id="MAHLI" type="button" class="btn btn-default">MAHLI</button>
-          </div>
-          <p id="curiosity-msg"></p>
-          <i id="loadSpinnerMars" class="fa fa-refresh fa-spin fa-3x fa-fw"></i>
-          <div class="row image-result-container">
+          <div class="row">
+            <h2 id="curiosity-instr-head">Explore Mars!</h2>
+            <p id="curiosity-instr-body">Click on the buttons to get started!</p>
+            <div class="row">
+              <div class="col-xs-2">
+                <div class="btn-group-vertical" role="group" aria-label="...">
+                  <button id="NavCam" type="button" class="btn btn-default">NavCam</button>
+                  <button id="MastCam" type="button" class="btn btn-default">MastCam</button>
+                  <button id="ChemCam" type="button" class="btn btn-default">ChemCam</button>
+                  <button id="FHazCam" type="button" class="btn btn-default">Front HazCam</button>
+                  <button id="RHazCam" type="button" class="btn btn-default">Rear HazCam</button>
+                  <button id="MAHLI" type="button" class="btn btn-default">MAHLI</button>
+                </div>
+              </div>
+              <div class="col-xs-6">
+                <p id="cam-title">Navigation Camera</p>
+                <p id="cam-description">Donec placerat ornare lacinia. Praesent pharetra auctor risus in ultricies. Vivamus viverra sed magna ut sagittis. Vestibulum id accumsan quam. Vestibulum sit amet vulputate purus. Sed varius, eros ut pulvinar consequat, est arcu vulputate enim, et accumsan elit enim at sem. Fusce ullamcorper eu enim vitae pretium. Phasellus faucibus ut sem et tristique. Maecenas consequat pulvinar urna vitae venenatis. Sed sodales ex eget vulputate lacinia. In interdum sollicitudin elit nec bibendum. Nunc eu leo sed nibh commodo sollicitudin. Sed sit amet aliquam purus.</p>
+              </div>
+              <div class="col-xs-4">
+                <p id="curiosity-warning-msg"></p>
+                <h4>Earth Date</h4>
+                <p id="earth-date"></p>
+                <h4>Sol</h4>
+                <p id="sol"></p>
+              </div>
+            </div>
+            <br>
+            <p id="curiosity-msg"></p>
+            <i id="loadSpinnerMars" class="fa fa-refresh fa-spin fa-3x fa-fw"></i>
+            <div class="row image-result-container">
+            </div>
           </div>
         </div>
 
         <!--DSCOVR's Earth Polychromatic Imaging Camera (EPIC) instrument-->
         <div class="row" id="section3">
-          <h3 id="earth-section">The Blue Marble</h3>
+          <h2 id="earth-section">The Blue Marble</h2>
           <div class="col-xs-12">
             <img id="earth" class="img-responsive" alt"Responsive image"></img>
           </div>
