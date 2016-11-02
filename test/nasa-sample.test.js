@@ -1,4 +1,13 @@
 describe("NASA Front End Test", function () {
+    var dateFromToday = (delta) => {
+        var d = new Date();
+        d.setDate(d.getDate() + delta);
+        var month = d.getMonth() + 1;
+        var day = d.getDate();
+        var date = d.getFullYear() + '-' + (('' + month).length < 2 ? '0' : '') + month + '-' + 
+        (('' + day).length < 2 ? '0' : '') + day;
+        return date;
+    };
     beforeEach(() => {
         fixture.setBase("test");
         fixture.load("nasa.fixture.html");
@@ -10,38 +19,19 @@ describe("NASA Front End Test", function () {
     });
 
     describe("Calendar", () => {
-        var dateFromToday = (delta) => {
-            var d = new Date();
-            d.setDate(d.getDate() + delta);
-            var month = d.getMonth() + 1;
-            var day = d.getDate();
-            var date = d.getFullYear() + '-' + (('' + month).length < 2 ? '0' : '') + month + '-' + 
-            (('' + day).length < 2 ? '0' : '') + day;
-            return date;
-        };
         it("should default to today", () => {
             var todaysDate = dateFromToday(0);
             var date = $('#datepicker').datepicker('getFormattedDate');
-            console.log(date);
             expect(date).toBe(todaysDate);
         });
     });
 
-        // Proof of Concept: this works
-    // $('#datepicker').datepicker('update', '2011-03-05');
-    // console.log($('#datepicker').datepicker('getFormattedDate'));
-
-
-/*
-    describe("API calls", () => {
+    describe("Curiosity API Calls", () => {
         var request;
 
         beforeEach(() => {
             jasmine.Ajax.install();
-
-            $("#search-term").val("hello");
-            $("#search-button").click();
-
+            $('#ChemCam').click();
             request = jasmine.Ajax.requests.mostRecent();
         });
 
@@ -49,15 +39,21 @@ describe("NASA Front End Test", function () {
             jasmine.Ajax.uninstall();
         });
 
-        it("should trigger a Giphy search when the search button is clicked", () => {
-            expect(request.url).toBe("http://api.giphy.com/v1/gifs/search?rating=pg-13&q=hello&api_key=dc6zaTOxFJmzC");
+        it("should trigger an API Call when camera is changed", () => {
+            var today = dateFromToday(0);
+            var yesterday = dateFromToday(-1);
+            var correctUrlA = "https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?earth_date=" +
+                yesterday + "&camera=CHEMCAM&api_key=IBxDgONe1zyvYY7kVo6ZG13tm0rV7wYQmHQbRix9&callback=%3F";
+            var correctUrlB = "https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?earth_date=" +
+                today + "&camera=CHEMCAM&api_key=IBxDgONe1zyvYY7kVo6ZG13tm0rV7wYQmHQbRix9&callback=%3F";
+            var success = request.url === correctUrlA || request.url === correctUrlB;
+            expect(success).toBe(true);
         });
 
-        it("should populate the image container when search results arrive", () => {
+        it("should populate the image container when the results arrive", () => {
             expect($(".image-result-container").children().length).toBe(0);
-
-            // To manage size, we supply a mock response that contains _only_ what the app will need. This does mean
-            // that we need to revise the mock response if our app starts using more (or different) data.
+            
+            /*
             request.respondWith({
                 status: 200,
                 responseText: JSON.stringify({
@@ -71,11 +67,28 @@ describe("NASA Front End Test", function () {
                     }]
                 })
             });
+        */
 
-            expect($(".image-result-container").children().length).toBe(1);
-            // We can go even further by examining the resulting element(s) and expecting their content to match the
-            // mock response, but we will leave this as "further work" for now.
+            // expect($(".image-result-container").children().length).toBe(1);
+
+        });
+
+        it("should display an error message if there are no photos", () => {
+
+        });
+
+    });
+
+    describe("Curiosity Camera Buttons", () => {
+
+        it("should default to NavCam", () => {
+            expect($("#cam-title").text()).toBe("Navigation Camera");
+        });
+
+        it("should change the camera title on click", () => {
+            $("#MastCam").click();
+            expect($("#cam-title").text()).toBe("Mast Camera");
         });
     });
-*/
+
 });

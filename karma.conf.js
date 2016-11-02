@@ -10,6 +10,7 @@ module.exports = function (config) {
     files: [
       "https://code.jquery.com/jquery-1.11.3.min.js",
       "lib/bootstrap-datepicker.min.js",
+      "lib/jquery.qtip.min.js",
       "*.js",
       "test/**/*.js",
       "test/**/*.html"

@@ -15,19 +15,27 @@
     <script src="//use.fontawesome.com/23710c8728.js"></script>
     <link href="//fonts.googleapis.com/css?family=Space+Mono" rel="stylesheet">
     <link href="//fonts.googleapis.com/css?family=Permanent+Marker" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="lib/jquery.qtip.min.css" />
   </head>
   <body data-spy="scroll" data-target="#myScrollspy" data-offset="20">
   <style>
-    #jumbo-sub, #curiosity-msg, #curiosity-warning-msg{
+    #jumbo-sub, #curiosity-msg, #curiosity-warning-msg, #cam-title {
       font-family: 'Space Mono', monospace;
     }
 
-    #instructions,#curiosity-instr-head, #curiosity-instr-body, #curiosity-warning-msg{
+    #instructions,#curiosity-instr-head, #curiosity-instr-body, #date {
       font-family: 'Permanent Marker', cursive;
+    }
+
+    #date {
+      font-size: 24px;
     }
 
     body {
         position: relative;
+    }
+    h3, h4, h5, h6 {
+      margin-top:0;
     }
     ul.nav-pills {
         position: fixed;
@@ -104,15 +112,16 @@
                 </div>
               </div>
               <div class="col-xs-6">
-                <p id="cam-title">Navigation Camera</p>
+                <h3 id="cam-title">Navigation Camera</h3>
                 <p id="cam-description">Donec placerat ornare lacinia. Praesent pharetra auctor risus in ultricies. Vivamus viverra sed magna ut sagittis. Vestibulum id accumsan quam. Vestibulum sit amet vulputate purus. Sed varius, eros ut pulvinar consequat, est arcu vulputate enim, et accumsan elit enim at sem. Fusce ullamcorper eu enim vitae pretium. Phasellus faucibus ut sem et tristique. Maecenas consequat pulvinar urna vitae venenatis. Sed sodales ex eget vulputate lacinia. In interdum sollicitudin elit nec bibendum. Nunc eu leo sed nibh commodo sollicitudin. Sed sit amet aliquam purus.</p>
               </div>
               <div class="col-xs-4">
                 <p id="curiosity-warning-msg"></p>
-                <h4>Earth Date</h4>
-                <p id="earth-date"></p>
-                <h4>Sol</h4>
-                <p id="sol"></p>
+                <p id="date">Earth Date</p>
+                <h3 id="earth-date"></h3>
+                <p id="date">Martian Sol<i class="fa fa-question-circle" title="The term ''sol'' is used by planetary astronomers to refer to the duration of a solar day on Mars. A mean Martian solar day, or ''sol'', is 24 hours, 39 minutes, and 35.244 seconds, with Sol 0 the first day that the rover is on Mars." aria-hidden="true"></i></p>
+                <h3 id="sol"></h3>
+                <p id="curiosity-instr-body">Click the calendar to change dates!</p>
               </div>
             </div>
             <br>
@@ -138,6 +147,7 @@
     <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="lib/bootstrap-datepicker.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="lib/jquery.qtip.min.js"></script>
     <script src="nasa.js"></script>
     <script>window.NASASearchController.init()</script>
   </body>

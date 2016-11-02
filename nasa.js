@@ -2,6 +2,9 @@
 window.NASASearchController = (() => {
     return {
         init: () => {
+
+            $('i[title]').qtip();
+
             var dateFromToday = (delta) => {
                 var d = new Date();
                 d.setDate(d.getDate() + delta);
@@ -48,9 +51,6 @@ window.NASASearchController = (() => {
 
             $('#datepicker').on("changeDate", function() {
                 curiosityWarningMsg.remove();
-
-                console.log($('#datepicker').datepicker('getFormattedDate'));
-
                 clickedDate = $('#datepicker').datepicker('getFormattedDate');
                 globalDate = clickedDate;
                 curiosityDate = clickedDate;
@@ -93,8 +93,7 @@ window.NASASearchController = (() => {
             var curiosityMsg = $("#curiosity-msg");
             var curiosityWarningMsg = $("#curiosity-warning-msg");
             var camTitle = $("#cam-title");
-            var camDes = $("#cam-description");
-
+            // var camDes = $("#cam-description");
 
             // Cameras
             var chemCam = $("#ChemCam");
@@ -120,7 +119,6 @@ window.NASASearchController = (() => {
                     apodTitle.text(result.title);
                     loadSpinner.remove();
                 }).fail(() => {
-                    console.log("fail");
                     loadSpinner.remove();
                     apodImage.remove();
                     apodTitle.remove();
@@ -176,9 +174,9 @@ window.NASASearchController = (() => {
                     curiosityWarningMsg.text("Today's data isn't availble yet! Here's yesterday's data...");
                     getMarsImagesAndAppend("NAVCAM", curiosityDate);
                 });
-            }
+            };
 
-             initialMarsImages();
+            initialMarsImages();
 
             chemCam.click(() => {
                 getMarsImagesAndAppend("CHEMCAM", curiosityDate);
