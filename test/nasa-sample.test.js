@@ -1,4 +1,5 @@
 describe("NASA Front End Test", function () {
+
     var dateFromToday = (delta) => {
         var d = new Date();
         d.setDate(d.getDate() + delta);
@@ -8,14 +9,19 @@ describe("NASA Front End Test", function () {
         (('' + day).length < 2 ? '0' : '') + day;
         return date;
     };
+
     beforeEach(() => {
+        jasmine.Ajax.install();
         fixture.setBase("test");
         fixture.load("nasa.fixture.html");
         window.NASASearchController.init();
+        // var request = jasmine.Ajax.requests.mostRecent();
+        // console.log(request);
     });
 
     afterEach(() => {
         fixture.cleanup();
+        jasmine.Ajax.uninstall();
     });
 
     describe("Calendar", () => {
@@ -30,13 +36,14 @@ describe("NASA Front End Test", function () {
         var request;
 
         beforeEach(() => {
-            jasmine.Ajax.install();
+            // jasmine.Ajax.install();
             $('#ChemCam').click();
             request = jasmine.Ajax.requests.mostRecent();
+            // console.log(request);
         });
 
         afterEach(() => {
-            jasmine.Ajax.uninstall();
+            // jasmine.Ajax.uninstall();
         });
 
         it("should trigger an API Call when camera is changed", () => {
@@ -52,35 +59,42 @@ describe("NASA Front End Test", function () {
 
         it("should populate the image container when the results arrive", () => {
             expect($(".image-result-container").children().length).toBe(0);
-            
-            /*
             request.respondWith({
                 status: 200,
                 responseText: JSON.stringify({
-                    data: [{
-                        source_tld: "tumblr.com",
+                    photos: [{
                         images: {
-                            fixed_width: {
-                                url: "http://media2.giphy.com/media/FiGiRei2ICzzG/200w.gif"
+                            earth_date: "2016-11-01",
+                            img_src: "http://mars.jpl.nasa.gov/msl-raw-images/proj/msl/redops/ods/surfac" +
+                            "e/sol/01507/opgs/edr/ncam/NLB_531280374EDR_F0590612NCAM00653M_.JPG",
+                            rover: {
+                                max_date: "2016-11-02"
                             }
                         }
                     }]
                 })
             });
-        */
-
-            // expect($(".image-result-container").children().length).toBe(1);
-
+            expect($(".image-result-container").children().length).toBe(1);
         });
 
         it("should display an error message if there are no photos", () => {
-
+            request.respondWith({
+                status: 404,
+                responseText: JSON.stringify({
+                    photos: [{
+                        images: {
+                            rover: {
+                                max_date: "2016-11-02"
+                            }
+                        }
+                    }]
+                })
+            });
+            expect($(".image-result-container").children().length).toBe(0);
         });
-
     });
 
     describe("Curiosity Camera Buttons", () => {
-
         it("should default to NavCam", () => {
             expect($("#cam-title").text()).toBe("Navigation Camera");
         });
@@ -90,5 +104,4 @@ describe("NASA Front End Test", function () {
             expect($("#cam-title").text()).toBe("Mast Camera");
         });
     });
-
 });

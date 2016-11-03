@@ -93,6 +93,7 @@ window.NASASearchController = (() => {
             var curiosityMsg = $("#curiosity-msg");
             var curiosityWarningMsg = $("#curiosity-warning-msg");
             var camTitle = $("#cam-title");
+            var apodError = $("#apod-error");
             // var camDes = $("#cam-description");
 
             // Cameras
@@ -118,11 +119,16 @@ window.NASASearchController = (() => {
                     apodDescription.text(result.explanation);
                     apodTitle.text(result.title);
                     loadSpinner.remove();
+                    apodError.text("");
                 }).fail(() => {
                     loadSpinner.remove();
-                    apodImage.remove();
-                    apodTitle.remove();
-                    apodDescription.text("No APOD Picture today!");
+                    apodImage.attr({
+                        src: "",
+                        alt: ""
+                    });
+                    apodTitle.text("");
+                    apodDescription.text("");
+                    apodError.text("There is no APOD data for this date!");
                 });
             };
 
@@ -154,7 +160,7 @@ window.NASASearchController = (() => {
                     earthDate.text(result.photos[0].earth_date);
                 }).fail(() =>{
                     imageResultContainer.empty();
-                    curiosityMsg.text("No Photos");
+                    curiosityMsg.text("No Photo Data Available...");
                     loadSpinnerMars.remove();
                 });
             };
@@ -213,7 +219,7 @@ window.NASASearchController = (() => {
                     {
                         src: imagePage + "?" + $.param(
                             {api_key: "IBxDgONe1zyvYY7kVo6ZG13tm0rV7wYQmHQbRix9"}
-                        )
+                        ),
                     }
                 );
             });

@@ -19,24 +19,30 @@
   </head>
   <body data-spy="scroll" data-target="#myScrollspy" data-offset="20">
   <style>
-    #jumbo-sub, #curiosity-msg, #curiosity-warning-msg, #cam-title {
+    #jumbo-sub, #curiosity-warning-msg, #cam-title, #epic-date-head {
       font-family: 'Space Mono', monospace;
     }
 
-    #instructions,#curiosity-instr-head, #curiosity-instr-body, #date {
+    #curiosity-msg, #apod-error {
+      font-family: 'Space Mono', monospace;
+      font-size: 25px;
+    }
+
+    #instructions,#curiosity-instr-head, #curiosity-instr-body, #date, #sub-title {
       font-family: 'Permanent Marker', cursive;
     }
 
-    #date {
+    #date, #epic-date-body {
       font-size: 24px;
     }
 
     body {
         position: relative;
     }
-    h3, h4, h5, h6 {
+    h2, h3, h4, h5, h6 {
       margin-top:0;
     }
+
     ul.nav-pills {
         position: fixed;
     }
@@ -58,7 +64,7 @@
       <nav class="col-xs-3" id="myScrollspy">
         <ul id="nav-panel" class="nav nav-pills nav-stacked">
           <li><a href="#section1">Astronomy Picture of the Day</a></li>
-          <li><a href="#section2">Mars Curiosity Rover</a></li>
+          <li><a href="#section2">Mars</a></li>
           <li><a href="#section3">Earth</a></li>
           <div id="datepicker"></div>
           <input type="hidden" id="my_hidden_input">
@@ -66,6 +72,7 @@
       </nav>
       <div class="col-xs-9">  
         <!--Astronomy Picture of the Day-->
+
         <h2 id="apod-section">Astronomy Picture of the Day</h2>
         <div>
           <div class="row">
@@ -79,6 +86,8 @@
             <div class="col-md-6">
               <h4 id="apodTitle" class="text-center"></h4>
               <p id="description"></p>
+              <p class="text-center" id="apod-error"></p>
+              <p id="instructions" class="text-center">Click the calendar <i class="fa fa-calendar" aria-hidden="true"></i> <br> to change dates!</p>
             </div>
           </div>
         </div>
@@ -86,22 +95,22 @@
 
         <!--Curiosity on Mars-->
         <div class="row" id="section2">
-          <h2 id="mars-section">Curiosity Rover on Mars</h2>
+          <h2 id="mars-section">Mars: The Red Planet</h2>
           <div class="row">
+            <div class="well">
+            <h2 id="curiosity-instr-head">Explore Mars with Curiosity!</h2>
+            <div class="row">
               <div class="col-xs-4">
                 <img src="photos/curiosity-rover.jpg" class="img-rounded img-responsive">
               </div>
               <div class="col-xs-8">
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae eros consectetur, scelerisque nisi id, elementum arcu. Nam rutrum nunc ligula, non interdum magna ornare ac. Suspendisse potenti. Pellentesque tellus tellus, tristique id ante quis, scelerisque consectetur risus. Morbi eget dictum libero. Morbi mattis elit a malesuada vestibulum. Suspendisse et semper purus. Mauris a mauris quis erat ullamcorper suscipit. Etiam vestibulum tellus in ultrices ultricies. Etiam rutrum consequat nulla aliquam ullamcorper. Nam sed efficitur erat. Nam bibendum mi at elit eleifend laoreet. Ut in tempor nunc, quis facilisis leo. Curabitur lacus augue, consectetur tempus ipsum sed, convallis aliquet tortor. Nunc sit amet velit eget metus euismod luctus.
-
-                Donec placerat ornare lacinia. Praesent pharetra auctor risus in ultricies. Vivamus viverra sed magna ut sagittis. Vestibulum id accumsan quam. Vestibulum sit amet vulputate purus. Sed varius, eros ut pulvinar consequat, est arcu vulputate enim, et accumsan elit enim at sem. Fusce ullamcorper eu enim vitae pretium. Phasellus faucibus ut sem et tristique. Maecenas consequat pulvinar urna vitae venenatis. Sed sodales ex eget vulputate lacinia. In interdum sollicitudin elit nec bibendum. Nunc eu leo sed nibh commodo sollicitudin. Sed sit amet aliquam purus.</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae eros consectetur, scelerisque nisi id, elementum arcu. Nam rutrum nunc ligula, non interdum magna ornare ac. Suspendisse potenti. Pellentesque tellus tellus, tristique id ante quis, scelerisque consectetur risus. Morbi eget dictum libero. Morbi mattis elit a malesuada vestibulum. Suspendisse et semper purus. Mauris a mauris quis erat ullamcorper suscipit. Etiam vestibulum tellus in ultrices ultricies. Etiam rutrum consequat nulla aliquam ullamcorper. Nam sed efficitur erat. Nam bibendum mi at elit eleifend laoreet. Ut in tempor nunc, quis facilisis leo. Curabitur lacus augue, consectetur tempus ipsum sed, convallis aliquet tortor. Nunc sit amet velit eget metus euismod luctus.</p>
             </div>
           </div>
-          <div class="row">
-            <h2 id="curiosity-instr-head">Explore Mars!</h2>
-            <p id="curiosity-instr-body">Click on the buttons to get started!</p>
+          <br><br>
             <div class="row">
               <div class="col-xs-2">
+                <p class="text-center" id="curiosity-instr-body">Choose your camera <i class="fa fa-camera-retro" aria-hidden="true"></i></p>
                 <div class="btn-group-vertical" role="group" aria-label="...">
                   <button id="NavCam" type="button" class="btn btn-default">NavCam</button>
                   <button id="MastCam" type="button" class="btn btn-default">MastCam</button>
@@ -119,11 +128,12 @@
                 <p id="curiosity-warning-msg"></p>
                 <p id="date">Earth Date</p>
                 <h3 id="earth-date"></h3>
-                <p id="date">Martian Sol<i class="fa fa-question-circle" title="The term ''sol'' is used by planetary astronomers to refer to the duration of a solar day on Mars. A mean Martian solar day, or ''sol'', is 24 hours, 39 minutes, and 35.244 seconds, with Sol 0 the first day that the rover is on Mars." aria-hidden="true"></i></p>
+                <p id="date">Martian Sol<i class="fa fa-question-circle" title="The term ''sol'' is the duration of a solar day on Mars. A average Martian solar day, or ''sol'', is 24 hours, 39 minutes, and 35.244 seconds. Sol 0 is set to be the first day that Curiosity landed on Mars." aria-hidden="true"></i></p>
                 <h3 id="sol"></h3>
-                <p id="curiosity-instr-body">Click the calendar to change dates!</p>
+                <p id="curiosity-instr-body">Click the calendar <i class="fa fa-calendar" aria-hidden="true"></i> to change dates!</p>
               </div>
             </div>
+          </div>
             <br>
             <p id="curiosity-msg"></p>
             <i id="loadSpinnerMars" class="fa fa-refresh fa-spin fa-3x fa-fw"></i>
@@ -131,12 +141,31 @@
             </div>
           </div>
         </div>
+        <br>
+        <br>
 
         <!--DSCOVR's Earth Polychromatic Imaging Camera (EPIC) instrument-->
         <div class="row" id="section3">
-          <h2 id="earth-section">The Blue Marble</h2>
+          <h2 id="earth-section">Earth: The Blue Marble</h2>
+          <div class="well">
+          <div class="row">
+            <div class="col-xs-4">
+              <h4 id="sub-title">Earth Polychromatic Imaging Camera (EPIC)</h4>
+              <p id="cam-title">Collecting daily natural color imagery of our blue planet.</p>
+              <img src="photos/dscovr.png" class="img-rounded img-responsive">
+            </div>
+            <div class="col-xs-6">
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae eros consectetur, scelerisque nisi id, elementum arcu. Nam rutrum nunc ligula, non interdum magna ornare ac. Suspendisse potenti. Pellentesque tellus tellus, tristique id ante quis, scelerisque consectetur risus. Morbi eget dictum libero. Morbi mattis elit a malesuada vestibulum. Suspendisse et semper purus. Mauris a mauris quis erat ullamcorper suscipit. Etiam vestibulum tellus in ultrices ultricies.</p>
+            </div>
+            <div class"col-xs-2">
+              <h4 id="epic-date-head">Most recent EPIC Photo taken on:</h4>
+              <h3 id="epic-date-body">adalkfsj</h3>
+            </div>
+          </div>
+        </div>
+          <br><br>
           <div class="col-xs-12">
-            <img id="earth" class="img-responsive" alt"Responsive image"></img>
+            <img id="earth" class="img-responsive img-rounded" alt="Responsive image"></img>
           </div>
         </div>
 
