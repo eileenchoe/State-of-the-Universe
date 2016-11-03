@@ -161,6 +161,8 @@ window.NASASearchController = (() => {
                 }).fail(() =>{
                     imageResultContainer.empty();
                     curiosityMsg.text("No Photo Data Available...");
+                    earthDate.text("");
+                    sol.text("");
                     loadSpinnerMars.remove();
                 });
             };
@@ -214,6 +216,10 @@ window.NASASearchController = (() => {
            
             // BLUE MARBLE
             $.getJSON("//epic.gsfc.nasa.gov/api/images.php").done((result) => {
+                var resultText = result[0].image;
+                var date = resultText.substring(8, 12) + "-" + resultText.substring(12, 14) + 
+                "-" + resultText.substring(14, 16);
+                $("#epic-date-body").text(date);
                 var imagePage = "//api.nasa.gov/EPIC/archive/natural/png/" + result[0].image + ".png";
                 earthImage.attr(
                     {
@@ -222,22 +228,11 @@ window.NASASearchController = (() => {
                         ),
                     }
                 );
+                $("#epic-error").text("");
+            }).fail(() => {
+                $("#epic-error").text("EPIC API Service is Unavailable");
+                alert("EPIC API Service Unavailable");
             });
         }
     };
 })();
-
-
-/*
-TO DO LIST:
-
-// ALT KEY: IBxDgONe1zyvYY7kVo6ZG13tm0rV7wYQmHQbRix9
-
-- Unit Testing
-- Blue Marble Stuff
-- Do better defaults when there is no picture (try yesterday for the default load, if none then display an error messate)
-- Format the earth date to Sol better.
-- Menu Bar responding to scroll
-- Protecting variables
-
-*/

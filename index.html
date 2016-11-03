@@ -19,11 +19,11 @@
   </head>
   <body data-spy="scroll" data-target="#myScrollspy" data-offset="20">
   <style>
-    #jumbo-sub, #curiosity-warning-msg, #cam-title, #epic-date-head {
+    #jumbo-sub, #curiosity-warning-msg, #cam-title, #epic-date-head, #references {
       font-family: 'Space Mono', monospace;
     }
 
-    #curiosity-msg, #apod-error {
+    #curiosity-msg, #apod-error, #epic-error {
       font-family: 'Space Mono', monospace;
       font-size: 25px;
     }
@@ -66,13 +66,14 @@
           <li><a href="#section1">Astronomy Picture of the Day</a></li>
           <li><a href="#section2">Mars</a></li>
           <li><a href="#section3">Earth</a></li>
+          <br>
           <div id="datepicker"></div>
           <input type="hidden" id="my_hidden_input">
         </ul>
       </nav>
       <div class="col-xs-9">  
-        <!--Astronomy Picture of the Day-->
 
+        <!--Astronomy Picture of the Day-->
         <h2 id="apod-section">Astronomy Picture of the Day</h2>
         <div>
           <div class="row">
@@ -143,7 +144,6 @@
         </div>
         <br>
         <br>
-
         <!--DSCOVR's Earth Polychromatic Imaging Camera (EPIC) instrument-->
         <div class="row" id="section3">
           <h2 id="earth-section">Earth: The Blue Marble</h2>
@@ -158,21 +158,43 @@
               <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae eros consectetur, scelerisque nisi id, elementum arcu. Nam rutrum nunc ligula, non interdum magna ornare ac. Suspendisse potenti. Pellentesque tellus tellus, tristique id ante quis, scelerisque consectetur risus. Morbi eget dictum libero. Morbi mattis elit a malesuada vestibulum. Suspendisse et semper purus. Mauris a mauris quis erat ullamcorper suscipit. Etiam vestibulum tellus in ultrices ultricies.</p>
             </div>
             <div class"col-xs-2">
-              <h4 id="epic-date-head">Most recent EPIC Photo taken on:</h4>
-              <h3 id="epic-date-body">adalkfsj</h3>
+              <h4 id="epic-date-head">The most recent EPIC Photo was taken on:</h4>
+              <h3 id="epic-date-body"></h3>
             </div>
           </div>
         </div>
           <br><br>
           <div class="col-xs-12">
-            <img id="earth" class="img-responsive img-rounded" alt="Responsive image"></img>
+            <img id="earth" class="img-responsive img-rounded"></img>
+            <h3 id="epic-error"></h3>
+            <br><br>
           </div>
         </div>
-
+          <hr>
+          <h3 id="references">Credits and References</h3>
+          <p>
+            <ul>
+              <li><a href="https://api.nasa.gov/index.html">NASA APIs</a></li>
+              <li><a href="https://apod.nasa.gov/apod/astropix.html">APOD</a></li>
+              <li><a href="https://api.nasa.gov/api.html#MarsPhotos">Mars Rover API</a></li>
+              <li><a href="https://api.nasa.gov/api.html#EPIC">EPIC API</a></li>
+            </ul>
+          </p>
+          <hr>
+          <h3 id="references" class="text-center">
+            <a href="https://github.com/eileenchoe"
+              <i class="fa fa-github" aria-hidden="true"></i>
+            </a>
+            <a href="mailto:echoe@lion.lmu.edu"
+              <i class="fa fa-envelope" aria-hidden="true"></i>
+            </a>
+            <a href="https://twitter.com/eileen_choe"
+              <i class="fa fa-twitter" aria-hidden="true"></i>
+            </a>
+          </h3>
       </div>
     </div>
   </div>
-
     <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="lib/bootstrap-datepicker.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
@@ -181,18 +203,3 @@
     <script>window.NASASearchController.init()</script>
   </body>
 </html>
-
-
-<!--
-
-  TO DO:
-  -get the date picker to work
-  -what's with the zoom out on local host?
-  -single page webpage (sticky side bar as a nav)
-  -make the three horizontal sections distinct
-  -init() is the default.
-    -how do you load different pictures after this point?
-  https://github.com/uxsolutions/bootstrap-datepicker
-  https://uxsolutions.github.io/bootstrap-datepicker/?markup=embedded&format=&weekStart=&startDate=&endDate=&startView=0&minViewMode=0&maxViewMode=4&todayBtn=true&clearBtn=false&language=en&orientation=auto&multidate=&multidateSeparator=&todayHighlight=on&keyboardNavigation=on&forceParse=on&toggleActive=on#sandbox
-
-  -->
