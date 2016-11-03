@@ -127,7 +127,7 @@ window.NASASearchController = (() => {
 
             // MARS CURIOSITY
             var getMarsImagesAndAppend = (camera, date) => {
-                $.getJSON("https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos", {
+                $.getJSON("//api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos", {
                     earth_date: date,
                     camera: camera,
                     api_key: "IBxDgONe1zyvYY7kVo6ZG13tm0rV7wYQmHQbRix9",
@@ -159,7 +159,7 @@ window.NASASearchController = (() => {
             };
 
             var initialMarsImages = () => {
-                $.getJSON("https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos", {
+                $.getJSON("//api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos", {
                     earth_date: curiosityDate,
                     camera: "NAVCAM",
                     api_key: "IBxDgONe1zyvYY7kVo6ZG13tm0rV7wYQmHQbRix9",
