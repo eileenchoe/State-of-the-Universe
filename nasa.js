@@ -28,14 +28,6 @@ window.NASASearchController = (() => {
             var jumbotronHeight = $("#jumbo-header").height();
             $("#nav-panel").css("top", jumbotronHeight + "px");
 
-
-            $(window).scroll(() => {
-                // jumbotronHeight = $("#jumbo-header").height();
-                // $("#nav-panel").css("top", jumbotronHeight + "px");
-                // $("#nav-panel").css("top", "200px");
-            }); 
-
-
             var clickedDate;
             $('#datepicker').datepicker({
                 todayBtn: true,
@@ -105,7 +97,6 @@ window.NASASearchController = (() => {
             var MAHLI = $("#MAHLI");
 
             // ASTRONOMY PICTURE OF THE DAY
-
             var getAPODImage = (date) => {
                 $.getJSON("https://api.nasa.gov/planetary/apod", {
                     date: date,
@@ -161,8 +152,8 @@ window.NASASearchController = (() => {
                 }).fail(() =>{
                     imageResultContainer.empty();
                     curiosityMsg.text("No Photo Data Available...");
-                    earthDate.text("");
-                    sol.text("");
+                    earthDate.text("N/A");
+                    sol.text("N/A");
                     loadSpinnerMars.remove();
                 });
             };
