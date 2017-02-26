@@ -10,7 +10,7 @@ window.NASASearchController = (() => {
                 d.setDate(d.getDate() + delta);
                 var month = d.getMonth() + 1;
                 var day = d.getDate();
-                var date = d.getFullYear() + '-' + (('' + month).length < 2 ? '0' : '') + month + '-' + 
+                var date = d.getFullYear() + '-' + (('' + month).length < 2 ? '0' : '') + month + '-' +
                 (('' + day).length < 2 ? '0' : '') + day;
                 return date;
             };
@@ -72,7 +72,7 @@ window.NASASearchController = (() => {
                     getMarsImagesAndAppend("MAHLI", globalDate);
                 });
             });
-                 
+
             var apodImage = $("#apodImage");
             var earthImage = $("#earth");
             var apodDescription = $("#description");
@@ -204,26 +204,26 @@ window.NASASearchController = (() => {
                 getMarsImagesAndAppend("MAHLI", curiosityDate);
                 camTitle.text("Mars Hands Lens Imager");
             });
-           
+
             // BLUE MARBLE
-            $.getJSON("//epic.gsfc.nasa.gov/api/images.php").done((result) => {
-                var resultText = result[0].image;
-                var date = resultText.substring(8, 12) + "-" + resultText.substring(12, 14) + 
-                "-" + resultText.substring(14, 16);
-                $("#epic-date-body").text(date);
-                var imagePage = "//api.nasa.gov/EPIC/archive/natural/png/" + result[0].image + ".png";
-                earthImage.attr(
-                    {
-                        src: imagePage + "?" + $.param(
-                            {api_key: "IBxDgONe1zyvYY7kVo6ZG13tm0rV7wYQmHQbRix9"}
-                        ),
-                    }
-                );
-                $("#epic-error").text("");
-            }).fail(() => {
-                $("#epic-error").text("EPIC API Service is Unavailable");
-                alert("EPIC API Service Unavailable");
-            });
+            // $.getJSON("//epic.gsfc.nasa.gov/api/images.php").done((result) => {
+            //     var resultText = result[0].image;
+            //     var date = resultText.substring(8, 12) + "-" + resultText.substring(12, 14) +
+            //     "-" + resultText.substring(14, 16);
+            //     $("#epic-date-body").text(date);
+            //     var imagePage = "//api.nasa.gov/EPIC/archive/natural/png/" + result[0].image + ".png";
+            //     earthImage.attr(
+            //         {
+            //             src: imagePage + "?" + $.param(
+            //                 {api_key: "IBxDgONe1zyvYY7kVo6ZG13tm0rV7wYQmHQbRix9"}
+            //             ),
+            //         }
+            //     );
+            //     $("#epic-error").text("");
+            // }).fail(() => {
+            //     $("#epic-error").text("EPIC API Service is Unavailable");
+            //     alert("EPIC API Service Unavailable");
+            // });
         }
     };
 })();
